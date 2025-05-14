@@ -1,15 +1,22 @@
 pipeline {
     agent any
+
     stages {
         stage('Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/sanikaa5/technova-inventory.git'
             }
         }
-        stage('Run') {
+        stage('Install Dependencies') {
             steps {
-                echo 'Running Python app...'
-                sh 'python3 app.py'
+                echo 'Installing dependencies...'
+                bat 'pip install flask'
+            }
+        }
+        stage('Run Flask App') {
+            steps {
+                echo 'Running Flask app...'
+                bat 'python app.py'
             }
         }
     }
