@@ -1,18 +1,9 @@
-# app.py
+from flask import Flask
+app = Flask(__name__)
 
-class Inventory:
-    def __init__(self):
-        self.items = []
+@app.route('/')
+def hello_world():
+    return 'Technova Inventory'
 
-    def add_item(self, item):
-        self.items.append(item)
-
-    def get_items(self):
-        return self.items
-
-if __name__ == "__main__":
-    print("Welcome to Inventory Management System")
-    inv = Inventory()
-    inv.add_item("Shoes")
-    inv.add_item("Socks")
-    print("Current Inventory:", inv.get_items())
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
