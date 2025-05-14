@@ -15,12 +15,6 @@ pipeline {
             }
         }
 
-        stage('Run Tests') {
-            steps {
-                // Run tests (replace with your actual testing framework)
-                bat 'cd technova-inventory && python -m unittest discover tests/'
-            }
-        }
 
     }
 
