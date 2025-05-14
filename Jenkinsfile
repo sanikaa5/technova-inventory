@@ -11,13 +11,6 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/sanikaa5/technova-inventory.git'
             }
         }
-        stage('Install Dependencies') {
-            steps {
-                echo 'Installing Python dependencies...'
-                // If you have any dependencies, you can use pip to install them
-                bat 'pip install -r requirements.txt' // Make sure `requirements.txt` is in your repo
-            }
-        }
         stage('Run') {
             steps {
                 echo 'Running Python app...'
