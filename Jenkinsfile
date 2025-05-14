@@ -2,14 +2,26 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "inventory-app"
-        IMAGE_TAG = "latest"
+        IMAGE_NAME = 'inventory-app'
+        IMAGE_TAG = 'latest'
     }
 
     stages {
         stage('Checkout') {
             steps {
                 checkout scm
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh 'pip install -r requirements.txt'
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                sh 'pytest tests/'
             }
         }
 
@@ -21,8 +33,8 @@ pipeline {
 
         stage('Run Docker Container') {
             steps {
-                sh "docker rm -f inventory-app || true"
-                sh "docker run -d --name inventory-app -p 8081:8080 $IMAGE_NAME:$IMAGE_TAG"
+                sh "docker rm -f $IMAGE_NAME || true"
+                sh "docker run -d --name $IMAGE_NAME -p 8081:8080 $IMAGE_NAME:$IMAGE_TAG"
             }
         }
     }
@@ -32,7 +44,7 @@ pipeline {
             echo 'Deployment Successful!'
         }
         failure {
-            echo 'Deployment Failed.'
+            echo 'Build/Deployment Failed.'
         }
     }
 }
