@@ -1,17 +1,14 @@
-# Use an official Python runtime as a parent image
+# Use the official Python image from the Docker Hub
 FROM python:3.9-slim
 
-# Set the working directory in the container
+# Set the working directory inside the container
 WORKDIR /app
 
 # Copy the current directory contents into the container at /app
 COPY . /app
 
-# Expose port 8080
-EXPOSE 8080
+# Expose the port the app runs on (adjust if necessary)
+EXPOSE 5000
 
-# Define environment variable
-ENV PYTHONUNBUFFERED=1
-
-# Command to run your app
-CMD ["python", "app.py"]
+# Define the command to run the app (using python3 or flask, depending on the app)
+CMD ["python3", "app.py"]
