@@ -10,7 +10,6 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                // No dependencies in this case, so this can be a placeholder
                 echo 'No dependencies to install'
             }
         }
