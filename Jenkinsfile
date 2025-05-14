@@ -1,6 +1,5 @@
 pipeline {
     agent any
-
     stages {
         stage('Checkout') {
             steps {
@@ -9,14 +8,15 @@ pipeline {
         }
         stage('Install Dependencies') {
             steps {
-                echo 'Installing dependencies...'
-                bat 'pip install flask'
+                // Install Flask and any other dependencies
+                echo 'Installing Flask...'
+                sh 'pip install Flask'
             }
         }
-        stage('Run Flask App') {
+        stage('Run') {
             steps {
-                echo 'Running Flask app...'
-                bat 'python app.py'
+                echo 'Running Python app...'
+                sh 'python3 app.py'
             }
         }
     }
