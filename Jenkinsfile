@@ -1,48 +1,38 @@
 pipeline {
     agent any
 
+    environment {
+        IMAGE_NAME = "inventory-app"
+        IMAGE_TAG = "latest"
+    }
+
     stages {
-        stage('Clone Code') {
+        stage('Checkout') {
             steps {
-                git 'https://github.com/sanikaa5/technova-inventory'
-            }
-        }
-
-        stage('Install Dependencies') {
-            steps {
-                # sh 'pip install -r requirements.txt'
-            }
-        }
-
-        stage('Run Tests') {
-            steps {
-                echo 'Running tests...'
-                # Add your test commands here if needed, for example:
-                # sh 'pytest'
+                checkout scm
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t technova-app .'
+                sh "docker build -t $IMAGE_NAME:$IMAGE_TAG ."
             }
         }
 
-        stage('Push Docker Image') {
+        stage('Run Docker Container') {
             steps {
-                script {
-                    docker.withRegistry('', 'dockerhub-credentials') {
-                        sh 'docker push technova-app'
-                    }
-                }
+                sh "docker rm -f inventory-app || true"
+                sh "docker run -d --name inventory-app -p 8081:8080 $IMAGE_NAME:$IMAGE_TAG"
             }
         }
+    }
 
-        stage('Deploy') {
-            steps {
-                echo 'Deploying the application (optional step)'
-                # You can add your deployment script here
-            }
+    post {
+        success {
+            echo 'Deployment Successful!'
+        }
+        failure {
+            echo 'Deployment Failed.'
         }
     }
 }
