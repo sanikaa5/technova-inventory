@@ -2,64 +2,43 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = 'inventory-technova'
-        EC2_USER = 'ubuntu'
-        EC2_HOST = '13.53.38.114'
-        EC2_SSH_KEY_PATH = 'C:\\Users\\Sanika Dhakite\\Downloads\\technova-key.pem'
+        // Define variables (replace with actual values)
+        REPO_URL = 'https://github.com/sanikaa5/technova-inventory.git'  // Your repo URL
+        BRANCH = 'main'  // The branch to monitor (default is usually 'main' or 'master')
     }
 
     stages {
         stage('Clone Repo') {
             steps {
-                git 'https://github.com/sanikaa5/technova-inventory.git'
+                // Clone the repository from GitHub
+                git url: "${REPO_URL}", branch: "${BRANCH}"
             }
         }
 
         stage('Run Tests') {
             steps {
                 script {
-                    // Assuming you have a test script or pytest setup in the app
+                    // Run Python tests using unittest (change if you're using pytest or other framework)
                     sh 'python3 -m unittest discover'
                 }
             }
         }
 
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    // Build the Docker image with the name 'inventory-technova'
-                    sh "docker build -t ${DOCKER_IMAGE} ."
-                }
-            }
-        }
 
-        stage('Push Docker Image') {
+        stage('Post-pipeline Steps') {
             steps {
-                script {
-                    // Optional step: Push the image to Docker Hub (if needed)
-                    // sh "docker push ${DOCKER_IMAGE}"
-                }
-            }
-        }
-
-        stage('Deploy to EC2') {
-            steps {
-                script {
-                    // SSH into EC2 instance and run the Docker container
-                    sh """
-                        ssh -i ${EC2_SSH_KEY_PATH} ${EC2_USER}@${EC2_HOST} "
-                        docker pull ${DOCKER_IMAGE}:latest
-                        docker run -d --name ${DOCKER_IMAGE} -p 80:80 ${DOCKER_IMAGE}:latest
-                        "
-                    """
-                }
+                echo 'Pipeline completed.'
             }
         }
     }
 
     post {
-        always {
-            echo 'Pipeline completed.'
+        success {
+            echo 'Build and tests were successful!'
+        }
+
+        failure {
+            echo 'There was a failure during the pipeline execution.'
         }
     }
 }
