@@ -1,29 +1,29 @@
 pipeline {
     agent any
-
     environment {
-        GIT_REPO = 'https://github.com/sanikaa5/technova-inventory.git'  // Replace with your repo URL
-        BRANCH_NAME = 'main'  // Replace with your branch
+        // Optional: If you have a virtual environment, you can set it up here
+        PYTHON_ENV = 'C:\\path\\to\\python\\env'  // Modify if using a specific virtual environment
+        PATH = "${env.PYTHON_ENV}\\Scripts;${env.PATH}"
     }
-
     stages {
-        stage('Clone Repository') {
+        stage('Checkout') {
             steps {
-                // Clone the GitHub repository directly into Jenkins workspace
-                bat 'git clone ${GIT_REPO}'
-                bat 'cd technova-inventory && git checkout ${BRANCH_NAME}'
+                git branch: 'main', url: 'https://github.com/sanikaa5/technova-inventory.git'
             }
         }
-
-
-    }
-
-    post {
-        success {
-            echo 'Build and packaging successful!'
+        stage('Install Dependencies') {
+            steps {
+                echo 'Installing Python dependencies...'
+                // If you have any dependencies, you can use pip to install them
+                bat 'pip install -r requirements.txt' // Make sure `requirements.txt` is in your repo
+            }
         }
-        failure {
-            echo 'Build or packaging failed.'
+        stage('Run') {
+            steps {
+                echo 'Running Python app...'
+                // Run the Python application
+                bat 'python app.py'
+            }
         }
     }
 }
