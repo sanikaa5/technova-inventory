@@ -14,5 +14,5 @@ if __name__ == "__main__":
     print("Welcome to Inventory Management System")
     inv = Inventory()
     inv.add_item("Shoes")
-    inv.add_item("Sandals")
+    inv.add_item("Socks")
     print("Current Inventory:", inv.get_items())
