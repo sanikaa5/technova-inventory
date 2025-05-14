@@ -18,14 +18,14 @@ pipeline {
         stage('Run Unit Tests') {
             steps {
                 echo 'Running unit tests...'
-                sh 'python3 -m unittest discover tests'
+                bat 'python3 -m unittest discover tests'
             }
         }
 
         stage('Run') {
             steps {
                 echo 'Running Python app...'
-                sh 'python3 app.py'
+                bat 'python3 app.py'
             }
         }
     }
