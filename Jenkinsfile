@@ -6,17 +6,21 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/sanikaa5/technova-inventory.git'
             }
         }
-        stage('Install Dependencies') {
+        stage('Setup Python & Flask') {
             steps {
-                // Install Flask and any other dependencies
-                echo 'Installing Flask...'
-                sh 'pip install Flask'
+                sh '''
+                    python3 -m venv venv
+                    source venv/bin/activate
+                    pip install Flask
+                '''
             }
         }
-        stage('Run') {
+        stage('Run App') {
             steps {
-                echo 'Running Python app...'
-                sh 'python3 app.py'
+                sh '''
+                    source venv/bin/activate
+                    python3 app.py
+                '''
             }
         }
     }
