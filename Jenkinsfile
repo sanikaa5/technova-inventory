@@ -2,43 +2,34 @@ pipeline {
     agent any
 
     environment {
-        // Define variables (replace with actual values)
-        REPO_URL = 'https://github.com/sanikaa5/technova-inventory.git'  // Your repo URL
-        BRANCH = 'main'  // The branch to monitor (default is usually 'main' or 'master')
+        GIT_REPO = 'https://github.com/sanikaa5/technova-inventory.git'  // Replace with your repo URL
+        BRANCH_NAME = 'main'  // Replace with your branch
     }
 
     stages {
-        stage('Clone Repo') {
+        stage('Clone Repository') {
             steps {
-                // Clone the repository from GitHub
-                git url: "${REPO_URL}", branch: "${BRANCH}"
+                // Clone the GitHub repository directly into Jenkins workspace
+                bat 'git clone ${GIT_REPO}'
+                bat 'cd technova-inventory && git checkout ${BRANCH_NAME}'
             }
         }
 
         stage('Run Tests') {
             steps {
-                script {
-                    // Run Python tests using unittest (change if you're using pytest or other framework)
-                    sh 'python3 -m unittest discover'
-                }
+                // Run tests (replace with your actual testing framework)
+                bat 'cd technova-inventory && python -m unittest discover tests/'
             }
         }
 
-
-        stage('Post-pipeline Steps') {
-            steps {
-                echo 'Pipeline completed.'
-            }
-        }
     }
 
     post {
         success {
-            echo 'Build and tests were successful!'
+            echo 'Build and packaging successful!'
         }
-
         failure {
-            echo 'There was a failure during the pipeline execution.'
+            echo 'Build or packaging failed.'
         }
     }
 }
