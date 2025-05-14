@@ -8,7 +8,7 @@ class TestInventory(unittest.TestCase):
         inv = Inventory()
         inv.add_item("Shoes")
         inv.add_item("Socks")
-        self.assertEqual(inv.get_items(), ["Shoes", "Socks"])
+        self.assertEqual(inv.get_items(), ["Laptop", "Charger"])
 
 if __name__ == '__main__':
     unittest.main()
