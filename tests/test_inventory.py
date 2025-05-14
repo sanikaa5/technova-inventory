@@ -6,8 +6,8 @@ from app import Inventory
 class TestInventory(unittest.TestCase):
     def test_add_and_get_items(self):
         inv = Inventory()
-        inv.add_item("Shoes")
-        inv.add_item("Socks")
+        inv.add_item("Laptop")
+        inv.add_item("Charger")
         self.assertEqual(inv.get_items(), ["Laptop", "Charger"])
 
 if __name__ == '__main__':
