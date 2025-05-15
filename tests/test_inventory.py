@@ -9,7 +9,7 @@ class FlaskAppTestCase(unittest.TestCase):
     def test_home_route(self):
         response = self.app.get('/')
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data.decode(), "Inventory App Running")
+        self.assertEqual(response.data.decode(), "Inventory App Running...")
 
 if __name__ == '__main__':
     unittest.main()
